@@ -25,8 +25,8 @@ import (
 )
 
 const (
-	protocol          = "tcp"                // protocol the proxy listens to defaults to tcp
-	port              = "5353"               // running on 5353 to avoid having to use sudo during development
+	protocol          = "tcp" // protocol the proxy listens to defaults to tcp
+	port              = "53"
 	dnsServerHost     = "1.1.1.1"            // use Cloudflare DNS server
 	dnsServerHostName = "cloudflare-dns.com" // hostname to validate the certificate against
 	dnsServerPortTLS  = "853"                // DNS over TLS port
