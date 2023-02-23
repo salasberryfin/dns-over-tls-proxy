@@ -8,7 +8,7 @@ and forwards the response to the original client.
 This solution allows a client that doesn't support DNS-over-TLS to use a proxy that 
 handles the DNS request with a TLS-compatible server.
 
-## Solution
+## Overview
 
 - Proxy starts a server that listens for DNS requests based on TCP -UDP pending-.
 - A new connection is established with the DNS-over-TLS server.
@@ -16,7 +16,7 @@ handles the DNS request with a TLS-compatible server.
     - The certificate received from the server is validated: hostname and expiration date.
 - The response from the DNS-over-TLS server is parsed a sent back to the client through the original connection.
 
-The process is transparent to the client, who doesn't need to be aware of the proxy configuration.
+The process is transparent to the client, which doesn't need to be aware of the proxy configuration.
 
 ## Build & Deploy
 
