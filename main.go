@@ -21,12 +21,13 @@ import (
 	"io"
 	"log"
 	"net"
+	"sync"
 	"time"
 )
 
 const (
-	protocol          = "tcp" // protocol the proxy listens to defaults to tcp
-	port              = "53"
+	portTCP           = "53"                 // TCP port
+	portUDP           = "54"                 // UDP port
 	dnsServerHost     = "1.1.1.1"            // use Cloudflare DNS server
 	dnsServerHostName = "cloudflare-dns.com" // hostname to validate the certificate against
 	dnsServerPortTLS  = "853"                // DNS over TLS port
@@ -89,38 +90,11 @@ func resolveTLS(buf []byte) ([]byte, error) {
 	return resp, nil
 }
 
-// handler processes the DNS requests received from the client
-func handler(conn net.Conn) {
-	// check with `kdig -d @localhost -p 5353 +tcp example.com`
-	buf, err := parseMessage(conn)
-	if err != nil {
-		log.Printf("Failed to format input: %v", err)
-		return
-	}
-	defer conn.Close()
-	resp, err := resolveTLS(buf)
-	if err != nil {
-		log.Printf("Failed to request domain resolution: %s\n", err)
-		return
-	}
-	conn.Write(resp)
-	log.Printf("Server response sent\n")
-}
-
-// main simply creates a new TCP server to act as proxy
+// main simply runs two concurrent go routines: TCP Listener and UDP
 func main() {
-	ln, err := net.Listen(protocol, ":"+port)
-	if err != nil {
-		log.Fatalf("Failed to start server: %v\n", err)
-	}
-	defer ln.Close()
-	log.Printf("Listening on port %s...\n", port)
-	for {
-		conn, err := ln.Accept()
-		if err != nil {
-			log.Print(err)
-			continue
-		}
-		go handler(conn)
-	}
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go createListenerTCP(&wg)
+	go createListenerUDP(&wg)
+	wg.Wait()
 }

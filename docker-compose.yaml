@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  proxytcp:
+    build: .
+    ports:
+      - "5353:53"
+      - "5354:54/udp"
