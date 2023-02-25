@@ -36,7 +36,6 @@ func createListenerUDP(wg *sync.WaitGroup) {
 			log.Print(err)
 			continue
 		}
-		log.Printf("UDP packet %s\n", buf)
 		go handlerUDP(pc, buf[:n], addr)
 	}
 }
