@@ -56,15 +56,15 @@ dig @127.0.0.1 -p 5353 google.com +tcp
 dig @127.0.0.1 -p 5354 google.com
 ```
 
-The project includes folder `tests` with two Bash scripts that send TCP/UDP requests 
-every second that can be used to validate the server concurrency.
+The project includes a `tests` folder with two Bash scripts that send TCP/UDP requests 
+every second that can be used to validate the server's concurrency.
 
 ## Security Disclaimer
 
-- Due to the proxy implementation, the communication between the client application and proxy 
+- Due to the proxy implementation, the communication between the client application and the proxy 
 is not secure and hence is still vulnerable to man-in-the-middle attacks.
 - DNS requests from the proxy to the DNS nameserver are encrypted but an eavesdropper can identify 
-that DNS-encrypted traffic is going through the network by observing traffic going through port 853.
+that DNS-encrypted traffic is going through port 853.
 - Privacy can still be a concern even when using an encrypted connection and the DNS server must be 
 owned by a trusted entity.
 
