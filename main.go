@@ -1,17 +1,7 @@
 /*
 DNS proxy:
-	- Listen for "regular" DNS requests
-	- Proxy to use DNS over TLS
-
-Features:
-	- Listen for TCP requests: concurrently
-	- Establish TLS connection to DNS-over-TLS end
-		- Certificate
-	- Receive TCP response
-	- Send back to client
-
-Extra:
-	- Add same for UDP->TCP->UDP
+	- Listen for "standard" DNS requests
+	- Proxy to use DNS-over-TLS
 */
 package main
 
