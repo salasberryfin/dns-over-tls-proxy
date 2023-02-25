@@ -56,9 +56,37 @@ dig @127.0.0.1 -p 5353 google.com +tcp
 dig @127.0.0.1 -p 5354 google.com
 ```
 
-## Disclaimer
+The project includes folder `tests` with two Bash scripts that send TCP/UDP requests 
+every second that can be used to validate the server concurrency.
+
+## Security Disclaimer
 
 - Due to the proxy implementation, the communication between the client application and proxy 
 is not secure and hence is still vulnerable to man-in-the-middle attacks.
+- DNS requests from the proxy to the DNS nameserver are encrypted but an eavesdropper can identify 
+that DNS-encrypted traffic is going through the network by observing traffic going through port 853.
+- Privacy can still be a concern even when using an encrypted connection and the DNS server must be 
+owned by a trusted entity.
 
 ## Integration
+
+Considering the massive use of the proxy, the deployment needs to be highly scalable.
+
+- Use a Kubernetes cluster for deployment
+- Define one pod with two containers:
+    - Application: where the Go program runs.
+    - Ambassador: proxy sitting between the application and the clients.
+- The application is deployed to a container where the Go binary is run.
+    - This container exposes ports for TCP and UDP to containers in the pod.
+- The ambassador container, which can be an Nginx proxy.
+    - This container includes an independent listener for each transport protocol.
+- Configure Horizontal Pod Autoscaling for the application.
+- Expose the service through a Load Balancer that manages traffic in case of scaling.
+
+## Improvements
+
+- Include protection mechanisms for clients:
+    - DNS validation.
+    - Blacklisting.
+- Improve performance by adding a cache of requested domains.
+- Handle invalid requests and error responses.
