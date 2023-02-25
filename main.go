@@ -1,6 +1,6 @@
 /*
 DNS proxy:
-	- Listen for "standard" DNS requests
+	- Listen for "standard" DNS queries
 	- Proxy to use DNS-over-TLS
 */
 package main
