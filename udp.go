@@ -9,7 +9,7 @@ import (
 // handlerUDP processes the UDP DNS queries received from the client
 func handlerUDP(pc net.PacketConn, buf []byte, addr net.Addr) {
 	log.Printf("Received UDP packet\n")
-	newBuf := []byte{byte(len(buf))}
+	newBuf := []byte{0, byte(len(buf))}
 	newBuf = append(newBuf, buf...)
 	resp, err := resolveTLS(newBuf)
 	if err != nil {
