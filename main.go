@@ -45,8 +45,7 @@ func validateCert(conn *tls.Conn) error {
 		return err
 	}
 	expires := conn.ConnectionState().PeerCertificates[0].NotAfter
-	diff := expires.Sub(time.Now())
-	if diff <= 0 {
+	if expires.Before(time.Now()) {
 		return fmt.Errorf("The certitificate expired on %v\n", expires)
 	}
 
