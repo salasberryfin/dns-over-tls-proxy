@@ -2,8 +2,7 @@ FROM golang:alpine3.17
 
 WORKDIR /app
 
-COPY go.mod ./
-COPY *.go ./
+COPY . ./
 
 RUN go build -o /dns-over-tls-proxy
 

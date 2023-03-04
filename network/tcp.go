@@ -1,15 +1,21 @@
-package main
+package network
 
 import (
 	"log"
 	"net"
 	"sync"
+
+	"github.com/salasberryfin/dns-over-tls-proxy/format"
+)
+
+const (
+	portTCP = "53" // TCP port
 )
 
 // handlerTCP processes the TCP DNS queries received from the client
 func handlerTCP(conn net.Conn) {
 	log.Printf("Received TCP connection\n")
-	buf, err := parseMessage(conn)
+	buf, err := format.ParseMessage(conn)
 	if err != nil {
 		log.Printf("Failed to format input: %v", err)
 		return
@@ -24,8 +30,8 @@ func handlerTCP(conn net.Conn) {
 	log.Printf("Server response sent\n")
 }
 
-// createListenerTCP listens for TCP connections and sends response back to client
-func createListenerTCP(wg *sync.WaitGroup) {
+// CreateListenerTCP listens for TCP connections and sends response back to client
+func CreateListenerTCP(wg *sync.WaitGroup) {
 	protocol := "tcp"
 	ln, err := net.Listen(protocol, ":"+portTCP)
 	if err != nil {

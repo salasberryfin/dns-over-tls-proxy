@@ -1,9 +1,13 @@
-package main
+package network
 
 import (
 	"log"
 	"net"
 	"sync"
+)
+
+const (
+	portUDP = "54" // UDP port
 )
 
 // handlerUDP processes the UDP DNS queries received from the client
@@ -20,7 +24,8 @@ func handlerUDP(pc net.PacketConn, buf []byte, addr net.Addr) {
 	log.Printf("Server response sent\n")
 }
 
-func createListenerUDP(wg *sync.WaitGroup) {
+// CreateListenerUDP listens for UDP packets on port `portUDP`
+func CreateListenerUDP(wg *sync.WaitGroup) {
 	protocol := "udp"
 	pc, err := net.ListenPacket(protocol, ":"+portUDP)
 	if err != nil {
