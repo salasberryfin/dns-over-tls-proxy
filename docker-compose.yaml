@@ -5,3 +5,8 @@ services:
     ports:
       - "5353:53"
       - "5354:54/udp"
+  redis-server:
+    image: "redis:alpine"
+    command: redis-server
+    ports:
+      - "6379:6379"

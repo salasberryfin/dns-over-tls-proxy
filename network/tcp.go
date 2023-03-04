@@ -5,6 +5,7 @@ import (
 	"net"
 	"sync"
 
+	"github.com/salasberryfin/dns-over-tls-proxy/cache"
 	"github.com/salasberryfin/dns-over-tls-proxy/format"
 )
 
@@ -15,6 +16,7 @@ const (
 // handlerTCP processes the TCP DNS queries received from the client
 func handlerTCP(conn net.Conn) {
 	log.Printf("Received TCP connection\n")
+	cache.Connect()
 	buf, err := format.ParseMessage(conn)
 	if err != nil {
 		log.Printf("Failed to format input: %v", err)
